@@ -20,7 +20,7 @@ const observer = new IntersectionObserver(handlerObserver, {
   rootMargin: '0px 0px 50px 0px',
 });
 
-const lightbox = new SimpleLightbox('.gallery .photo-card-link', {
+const lightbox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
 });
 
