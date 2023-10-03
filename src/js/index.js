@@ -19,6 +19,11 @@ const observer = new IntersectionObserver(handlerObserver, {
   rootMargin: '0px 0px 50px 0px',
 });
 
+const lightbox = new SimpleLightbox('.gallery .photo-card-link', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
 function showSearchResults(totalHits) {
   Notiflix.Notify.success(
     `Hooray! We found ${totalHits} images.`,
@@ -39,6 +44,7 @@ async function handlerObserver(entries) {
         console.log(totalHits);
         const markup = imgCardMarkup(hits);
         refs.gallery.insertAdjacentHTML('beforeend', markup);
+        lightbox.refresh();
         smoothScroll();
 
         if (refs.gallery.children.length >= totalImages) {
