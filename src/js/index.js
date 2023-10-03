@@ -13,6 +13,7 @@ let totalImages = 0;
 const notiflixOoptions = {
   borderRadius: '20px',
   cssAnimationStyle: 'from-top',
+  fontSize: '20px',
 };
 
 const observer = new IntersectionObserver(handlerObserver, {
@@ -20,7 +21,6 @@ const observer = new IntersectionObserver(handlerObserver, {
 });
 
 const lightbox = new SimpleLightbox('.gallery .photo-card-link', {
-  captionsData: 'alt',
   captionDelay: 250,
 });
 
@@ -31,9 +31,24 @@ function showSearchResults(totalHits) {
   );
 }
 
-// function toggleLoadMoreButton() {
-//   refs.loadMoreBtn.classList.toggle('is-hidden');
-// }
+function toggleUpButton() {
+  const scrollY = window.scrollY;
+
+  if (scrollY > 0) {
+    refs.upBtn.classList.remove('is-hidden');
+  } else {
+    refs.upBtn.classList.add('is-hidden');
+  }
+}
+
+window.addEventListener('scroll', toggleUpButton);
+
+refs.upBtn.addEventListener('click', () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+});
 
 async function handlerObserver(entries) {
   for (const entry of entries) {
@@ -82,6 +97,15 @@ refs.searchForm.addEventListener('submit', async event => {
 
   if (searchQuery === '') {
     Notiflix.Notify.info('Please enter a search query.', notiflixOoptions);
+    return;
+  }
+
+  if (totalImages > 0) {
+    Notiflix.Notify.warning(
+      `We already found images for "${searchQuery.toUpperCase()}".
+      Please enter a different search query`,
+      notiflixOoptions
+    );
     return;
   }
 
