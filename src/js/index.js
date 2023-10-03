@@ -100,15 +100,6 @@ refs.searchForm.addEventListener('submit', async event => {
     return;
   }
 
-  if (totalImages > 0) {
-    Notiflix.Notify.warning(
-      `We already found images for "${searchQuery.toUpperCase()}".
-      Please enter a different search query`,
-      notiflixOoptions
-    );
-    return;
-  }
-
   refs.gallery.innerHTML = '';
   page = 1;
 
@@ -127,6 +118,7 @@ refs.searchForm.addEventListener('submit', async event => {
       refs.gallery.insertAdjacentHTML('beforeend', markup);
       showSearchResults(totalHits);
       observer.observe(refs.jsGuard);
+      lightbox.refresh();
     }
   } catch (error) {
     console.error('Error fetching images:', error);
